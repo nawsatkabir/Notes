@@ -67,13 +67,7 @@ const subjects = [
       // { title: "Note er naam", file: "tech-writing-1.pdf" },
     ]
   }
-   {
-    name: "CSE 100 - Object Oriented Programming Language",
-    icon: "📝",
-    notes: [
-      // { title: "Note er naam", file: "oop-note-1.pdf" },
-    ]
-  },
+  
 ];
 
 
