@@ -1,57 +1,19 @@
 // ==================================================
-//  1) LOGIN SETTINGS  (এখানে ID range আর password বদলাতে পারবে)
+//  1) LOGIN SETTINGS
 // ==================================================
-const ID_START = 20254103082;   // প্রথম ID
-const ID_END   = 20254103200;   // শেষ ID  (নিজের শেষ ID অনুযায়ী বদলাও)
+const ID_START = 20254103082;   // prothom ID
+const ID_END   = 20254103200;   // shesh ID
 const PASSWORD = "section3jindabad";
 
 
 // ==================================================
-//  2) SUBJECTS & NOTES  (শুধু এই অংশে note/PDF add করবে)
+//  2) SUBJECTS & NOTES
 //
-//  নতুন note add করতে:
-//   - PDF file টা "pdfs" folder এ রাখো
-//   - নিচে note এর ভেতরে  file: "pdfs/file-name.pdf"  লেখো
-//
-//  নতুন subject add করতে: একটা { name, icon, notes: [...] } block copy করো
+//  Notun note add korte notes: [ ] er moddhe ei format e likho:
+//  { title: "Note name", description: "Short details", size: "1.5 MB", file: "pdfs/file-name.pdf" }
+//  (ekadhik note hole modhe modhe comma dite hobe, shesh note e na)
 // ==================================================
 const subjects = [
-  {
-    name: "Data Structure",
-    icon: "🧩",
-    notes: [
-      { title: "Introduction to Data Structure", description: "Basic Data Structure concepts and definitions.", size: "2.4 MB", file: "pdfs/ds-intro.pdf" },
-      { title: "Array & Array Operations", description: "Array insertion, deletion, searching and operations.", size: "1.8 MB", file: "pdfs/ds-array.pdf" },
-      { title: "Linked List", description: "Linked list memory representation and traversal.", size: "2.1 MB", file: "pdfs/ds-linked-list.pdf" }
-    ]
-  },
-  {
-    name: "Computer Architecture",
-    icon: "💻",
-    notes: [
-      { title: "Binary Multiplication & Division", description: "Binary arithmetic with examples.", size: "1.9 MB", file: "pdfs/ca-binary.pdf" },
-      { title: "MIPS Introduction", description: "MIPS, opcode and operands.", size: "2.3 MB", file: "pdfs/ca-mips.pdf" },
-      { title: "CPU & Registers", description: "Basic CPU and register concepts.", size: "1.5 MB", file: "pdfs/ca-cpu.pdf" }
-    ]
-  },
-  {
-    name: "C / C++",
-    icon: "💡",
-    notes: [
-      { title: "C++ Basic Programming", description: "Variables, input, output and conditions.", size: "1.4 MB", file: "pdfs/cpp-basic.pdf" },
-      { title: "Loops & Functions", description: "For loop, while loop and functions.", size: "1.7 MB", file: "pdfs/cpp-loops.pdf" },
-      { title: "Array Problems", description: "Beginner array programming problems.", size: "2.0 MB", file: "pdfs/cpp-array.pdf" }
-    ]
-  },
-  {
-    name: "Mathematics",
-    icon: "📐",
-    notes: [
-      { title: "Functions", description: "Basic mathematical functions.", size: "1.6 MB", file: "pdfs/math-functions.pdf" },
-      { title: "Mathematical Notation", description: "Basic mathematical notation.", size: "1.2 MB", file: "pdfs/math-notation.pdf" }
-    ]
-  }
-  const subjects = [
   {
     name: "CHE 101 - Chemistry",
     icon: "🧪",
@@ -83,11 +45,10 @@ const subjects = [
     notes: []
   }
 ];
-];
 
 
 // ==================================================
-//  এর নিচের code কিছু বদলানোর দরকার নেই
+//  Er niche er code kichu bodlanor dorkar nei
 // ==================================================
 const $ = id => document.getElementById(id);
 const loginPage = $("loginPage"), mainPage = $("mainPage"), errorMessage = $("errorMessage");
@@ -112,7 +73,7 @@ $("loginForm").addEventListener("submit", e => {
 
   if (checkLogin(id, pass)) {
     errorMessage.textContent = "";
-    sessionStorage.setItem("uninotes_user", id);
+    try { sessionStorage.setItem("uninotes_user", id); } catch (err) {}
     enterSite(id);
   } else {
     errorMessage.textContent = "Wrong Student ID or password. Please try again.";
@@ -167,6 +128,10 @@ function showNotes(subject) {
   $("notesTitle").textContent = subject.name;
   $("notesSubtitle").textContent = subject.notes.length + (subject.notes.length === 1 ? " note" : " notes") + " available";
   notesContainer.innerHTML = "";
+
+  if (!subject.notes.length) {
+    notesContainer.innerHTML = '<div class="empty">No notes added for this subject yet.</div>';
+  }
 
   subject.notes.forEach(note => {
     const card = document.createElement("div");
