@@ -1,5 +1,5 @@
 // ==================================================
-//  1) LOGIN SETTINGS
+//  1) LOGIN SETTINGS  (ekhane ID range ar password bodlate parbe)
 // ==================================================
 const ID_START = 20254103082;   // prothom ID
 const ID_END   = 20254103200;   // shesh ID
@@ -7,43 +7,67 @@ const PASSWORD = "section3jindabad";
 
 
 // ==================================================
-//  2) SUBJECTS & NOTES
+//  2) SUBJECTS & NOTES  (shudhu ekhane note add korbe)
 //
-//  Notun note add korte notes: [ ] er moddhe ei format e likho:
-//  { title: "Note name", description: "Short details", size: "1.5 MB", file: "pdfs/file-name.pdf" }
-//  (ekadhik note hole modhe modhe comma dite hobe, shesh note e na)
+//  Notun note add korte: nicher line ta copy kore, subject er notes: [ ] er moddhe paste koro
+//
+//     { title: "Note er naam", file: "pdf-file-er-naam.pdf" },
+//
+//  - Ekadhik note hole proti note er pore comma (,) thakbe
+//  - PDF file ta GitHub er "pdfs" folder e upload korte hobe
+//  - Chaile description ar size o dite paro:
+//     { title: "Note er naam", file: "abc.pdf", description: "Short details", size: "2 MB" },
 // ==================================================
 const subjects = [
+
   {
     name: "CHE 101 - Chemistry",
     icon: "🧪",
-    notes: []
+    notes: [
+      // { title: "Note er naam", file: "che-note-1.pdf" },
+    ]
   },
+
   {
     name: "CSE 205 - Digital Logic Design",
     icon: "💻",
-    notes: []
+    notes: [
+      // { title: "Note er naam", file: "dld-note-1.pdf" },
+    ]
   },
+
   {
     name: "CSE 206 - Digital Logic Design Lab",
     icon: "🔬",
-    notes: []
+    notes: [
+      // { title: "Note er naam", file: "dld-lab-1.pdf" },
+    ]
   },
+
   {
     name: "CSE 231 - Algorithms",
     icon: "🧠",
-    notes: []
+    notes: [
+      // { title: "Note er naam", file: "algo-note-1.pdf" },
+    ]
   },
+
   {
     name: "CSE 232 - Algorithms Lab",
     icon: "💻",
-    notes: []
+    notes: [
+      // { title: "Note er naam", file: "algo-lab-1.pdf" },
+    ]
   },
+
   {
     name: "CSE 301 - Technical Writing and Presentation",
     icon: "📝",
-    notes: []
+    notes: [
+      // { title: "Note er naam", file: "tech-writing-1.pdf" },
+    ]
   }
+
 ];
 
 
@@ -59,6 +83,12 @@ let downloads = 0;
 let currentNote = null;
 let currentSubject = null;
 
+// file: "abc.pdf" likhlei hobe, "pdfs/" automatic jure jabe
+function filePath(note) {
+  if (!note || !note.file) return "";
+  return note.file.includes("/") ? note.file : "pdfs/" + note.file;
+}
+
 // ---------- LOGIN ----------
 function checkLogin(id, pass) {
   if (!/^\d+$/.test(id)) return false;
@@ -73,7 +103,7 @@ $("loginForm").addEventListener("submit", e => {
 
   if (checkLogin(id, pass)) {
     errorMessage.textContent = "";
-    try { sessionStorage.setItem("uninotes_user", id); } catch (err) {}
+    sessionStorage.setItem("uninotes_user", id);
     enterSite(id);
   } else {
     errorMessage.textContent = "Wrong Student ID or password. Please try again.";
@@ -128,7 +158,6 @@ function showNotes(subject) {
   $("notesTitle").textContent = subject.name;
   $("notesSubtitle").textContent = subject.notes.length + (subject.notes.length === 1 ? " note" : " notes") + " available";
   notesContainer.innerHTML = "";
-
   if (!subject.notes.length) {
     notesContainer.innerHTML = '<div class="empty">No notes added for this subject yet.</div>';
   }
@@ -139,8 +168,8 @@ function showNotes(subject) {
     card.innerHTML = `
       <div class="file">📄</div>
       <h3>${note.title}</h3>
-      <p>${note.description}</p>
-      <button class="view-btn">Open note (${note.size})</button>`;
+      <p>${note.description || "PDF note"}</p>
+      <button class="view-btn">Open note${note.size ? " (" + note.size + ")" : ""}</button>`;
     card.querySelector(".view-btn").addEventListener("click", () => openNote(note));
     notesContainer.appendChild(card);
   });
@@ -160,8 +189,8 @@ $("backBtn").addEventListener("click", () => {
 function openNote(note) {
   currentNote = note;
   $("modalTitle").textContent = note.title;
-  $("modalInfo").textContent = "PDF · " + note.size;
-  $("modalDescription").textContent = note.description;
+  $("modalInfo").textContent = "PDF" + (note.size ? " · " + note.size : "");
+  $("modalDescription").textContent = note.description || "";
   modal.classList.remove("hidden");
 }
 
@@ -171,15 +200,15 @@ modal.addEventListener("click", e => { if (e.target === modal) closeNoteModal();
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeNoteModal(); });
 
 $("viewBtn").addEventListener("click", () => {
-  if (!currentNote || !currentNote.file) return alert("This PDF has not been added yet.");
-  window.open(currentNote.file, "_blank");
+  if (!filePath(currentNote)) return alert("This PDF has not been added yet.");
+  window.open(filePath(currentNote), "_blank");
 });
 
 $("downloadBtn").addEventListener("click", () => {
-  if (!currentNote || !currentNote.file) return alert("This PDF has not been added yet.");
+  if (!filePath(currentNote)) return alert("This PDF has not been added yet.");
   const a = document.createElement("a");
-  a.href = currentNote.file;
-  a.download = currentNote.file.split("/").pop();
+  a.href = filePath(currentNote);
+  a.download = filePath(currentNote).split("/").pop();
   document.body.appendChild(a);
   a.click();
   a.remove();
