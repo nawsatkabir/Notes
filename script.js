@@ -24,7 +24,7 @@ const subjects = [
     name: "CHE 101 - Chemistry",
     icon: "🧪",
     notes: [
-      // { title: "Note er naam", file: "che-note-1.pdf" },
+      { title: "Chemistry Chapter 1", file: "che-chapter-1.pdf" },      // { title: "Note er naam", file: "che-note-1.pdf" },
     ]
   },
 
