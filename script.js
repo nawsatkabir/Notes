@@ -51,6 +51,38 @@ const subjects = [
       { title: "Mathematical Notation", description: "Basic mathematical notation.", size: "1.2 MB", file: "pdfs/math-notation.pdf" }
     ]
   }
+  const subjects = [
+  {
+    name: "CHE 101 - Chemistry",
+    icon: "🧪",
+    notes: []
+  },
+  {
+    name: "CSE 205 - Digital Logic Design",
+    icon: "💻",
+    notes: []
+  },
+  {
+    name: "CSE 206 - Digital Logic Design Lab",
+    icon: "🔬",
+    notes: []
+  },
+  {
+    name: "CSE 231 - Algorithms",
+    icon: "🧠",
+    notes: []
+  },
+  {
+    name: "CSE 232 - Algorithms Lab",
+    icon: "💻",
+    notes: []
+  },
+  {
+    name: "CSE 301 - Technical Writing and Presentation",
+    icon: "📝",
+    notes: []
+  }
+];
 ];
 
 
